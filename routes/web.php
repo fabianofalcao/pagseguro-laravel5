@@ -1,6 +1,8 @@
 <?php
 
 $this->get('pagseguro', 'PagSeguroController@pagseguro')->name('pagseguro');
+$this->get('pagseguro-lightbox', 'PagSeguroController@lightbox')->name('pagseguro.lightbox');
+$this->post('pagseguro-lightbox', 'PagSeguroController@lightboxCode')->name('pagseguro.lightbox.code');
 
 $this->get('pagseguro-btn', function(){
     return view('pagseguro-btn');
