@@ -9,14 +9,21 @@
 <body>
     <a href="#" class="btn-buy">Finalizar compra!</a>
 
+    {!! csrf_field() !!}
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(function(){
             $(".btn-buy").click(function(){
+                var token = $("input[name='_token']").val();
                 $.ajax({
                     url: "{{route('pagseguro.lightbox.code')}}",
                     method: "POST",
-                    data: {}
+                    data: {_token: token}
+                }).done(function(code){
+                    PagSeguroLightbox(code);
+                }).fail(function(){
+
                 });
                 return false;
             })

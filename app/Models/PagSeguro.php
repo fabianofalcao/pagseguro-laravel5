@@ -27,7 +27,7 @@ class PagSeguro extends Model
             'senderName'                => 'Jose Comprador',
             'senderAreaCode'            => '99',
             'senderPhone'               => '99999999',
-            'senderEmail'               => 'comprador@uol.com.br',
+            'senderEmail'               => 'c96775509179858224858@sandbox.pagseguro.com.br',
             'shippingType'              => '1',
             'shippingAddressStreet'     => 'Av. PagSeguro',
             'shippingAddressNumber'     => '9999',
