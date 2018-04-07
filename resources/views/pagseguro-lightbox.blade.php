@@ -21,13 +21,29 @@
                     method: "POST",
                     data: {_token: token}
                 }).done(function(code){
-                    PagSeguroLightbox(code);
+                    lightbox(code);
                 }).fail(function(){
 
                 });
                 return false;
             })
         });
+
+        function lightbox(code){
+            var isOpenLightbox = PagSeguroLightbox({
+                code: code
+            }, {
+                success: function(transactionCode){
+                    alert('Pedido realizado com sucesso: '+transactionCode);
+                },
+                abort: function(){
+                    alert('Compra abortada');
+                }
+            });
+            if(!isOpenLightbox){
+                location.href="{{config('pagseguro.url_redirect_after_request')}}"+code;
+            }
+        }
     </script>
     <script src="{{config('pagseguro.url_lightbox_sandbox')}}"></script>
 </body>
