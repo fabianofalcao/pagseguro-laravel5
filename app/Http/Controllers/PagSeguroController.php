@@ -26,5 +26,13 @@ class PagSeguroController extends Controller
         return $pagseguro->generate();
     }
 
-
+    public function transparente()
+    {
+        return view('pagseguro-transparente');
+    }
+    
+    public function getCode(PagSeguro $pagseguro)
+    {
+        $pagseguro->getSessionId();
+    }
 }

@@ -52,4 +52,26 @@ class PagSeguro extends Model
         $code = $xml->code;
         return $code;
     }
+
+    public function getSessionId()
+    {
+        $params = [
+            'email'                     => config('pagseguro.email'),
+            'token'                     => config('pagseguro.token'),
+        ];
+        
+        $guzzle = new Guzzle;
+        $response = $guzzle->request('POST', config('pagseguro.url_transparente_session_sandbox'), [
+            'query' => $params,
+            'verify' => false,
+        ]);
+        $body = $response->getBody();
+        $contents = $body->getContents();
+
+        $xml = simplexml_load_string($contents);
+        dd($xml);
+
+        $code = $xml->code;
+        return $code;
+    }
 }
