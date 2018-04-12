@@ -33,6 +33,6 @@ class PagSeguroController extends Controller
     
     public function getCode(PagSeguro $pagseguro)
     {
-        $pagseguro->getSessionId();
+        return $pagseguro->getSessionId();
     }
 }
