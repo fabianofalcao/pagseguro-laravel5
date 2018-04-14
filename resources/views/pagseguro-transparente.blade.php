@@ -10,6 +10,8 @@
     {!! Form::open(['id' => 'form']) !!}
     {!! Form::close() !!}
     <a href="" class="btn-finished">Finalizar Compra!</a>
+    <div class="payment_methods"></div>
+
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{ config('pagseguro.url_transparente_js_sandbox') }}"></script>
@@ -17,8 +19,8 @@
         $(function(){
             $('.btn-finished').click(function() {
                 setSessionId();
-
-               return false; 
+                
+                return false; 
             });
         });
 
@@ -28,10 +30,30 @@
                 url: "{{route('pagseguro.code.transparente')}}",
                 method: 'POST',
                 data: data
-            }).done(function(data){
-                PagSeguroDirectPayment.setSessionId(data);
+            }).done(function(code){
+                PagSeguroDirectPayment.setSessionId(code);
+                getPaymentMethods();
             }).fail(function(){
                 alert('Falha na requisição...');
+            });
+        }
+
+        function getPaymentMethods(){
+            
+            PagSeguroDirectPayment.getPaymentMethods({
+                success: function(response){
+                    console.log(response);
+                    if(response.error == false){
+                        $.each(response.paymentMethods, function(key, value){
+                            $('.payment_methods').append(key+'<br/>');
+                        });
+                    }
+                },
+                error: function(response){
+                    console.log(response);
+                },
+                complete: function(response){
+                },
             });
         }
     </script>

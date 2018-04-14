@@ -18,6 +18,6 @@ return [
     'url_transparente_session_production' => 'https://ws.pagseguro.uol.com.br/v2/sessions',
 
     'url_transparente_js_sandbox' => 'https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js',
-    'url_transparente_js_sandbox' => 'https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js',
+    'url_transparente_js_production' => 'https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js',
 
 ];
