@@ -35,4 +35,9 @@ class PagSeguroController extends Controller
     {
         return $pagseguro->getSessionId();
     }
+
+    public function billet(Request $request, PagSeguro $pagseguro)
+    {
+        return $pagseguro->paymentBillet($request->sendHash);
+    }
 }

@@ -9,7 +9,7 @@
 <body>
     {!! Form::open(['id' => 'form']) !!}
     {!! Form::close() !!}
-    <a href="" class="btn-finished">Finalizar Compra!</a>
+    <a href="" class="btn-finished">Pagar com boleto bancário</a>
     <div class="payment_methods"></div>
 
     
@@ -32,7 +32,8 @@
                 data: data
             }).done(function(code){
                 PagSeguroDirectPayment.setSessionId(code);
-                getPaymentMethods();
+                //getPaymentMethods();
+                paymentBillet();
             }).fail(function(){
                 alert('Falha na requisição...');
             });
@@ -54,6 +55,21 @@
                 },
                 complete: function(response){
                 },
+            });
+        }
+
+        function paymentBillet(){
+            var sendHash = PagSeguroDirectPayment.getSenderHash();
+            var data = $('#form').serialize()+"&sendHash="+sendHash;
+            $.ajax({
+                url: "{{route('pagseguro.billet')}}",
+                method: 'POST',
+                data: data
+            }).done(function(url){
+                console.log(url);
+                location.href=url;
+            }).fail(function(){
+                alert('Falha na requisição...');
             });
         }
     </script>
