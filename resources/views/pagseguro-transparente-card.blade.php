@@ -29,12 +29,13 @@
         </div>
 
         <div class="form-group">
-            <label for="cardCVC">Código de segurança (3 digitos)</label>
-            {!! Form::text('cardCVC', null, ['class' => 'form-control', 'placeholder' => 'Código de segurança', 'required']) !!}
+            <label for="cardCVV">Código de segurança (3 digitos)</label>
+            {!! Form::text('cardCVV', null, ['class' => 'form-control', 'placeholder' => 'Código de segurança', 'required']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::hidden('cardBrand', null) !!}
+            {!! Form::hidden('cardToken', null) !!}
             <button type="submit" class="btn btn-default btn-buy">Enviar agora</button>
         </div>
     {!! Form::close() !!}
@@ -53,6 +54,8 @@
             
             $('#form_card').submit(function(){
                 getBrand();
+                startPreloader('Eviando dados...');
+                createCredCardToken();
                 return false;
             })
 
@@ -90,6 +93,28 @@
                 },
                 complete: function(response){
                    
+                }
+            });
+        }
+
+        function createCredCardToken() {
+            PagSeguroDirectPayment.createCardToken({
+                cardNumber: $("input[name='cardNumber']").val().replace(/ /g, ''),
+                brand: $("input[name='cardBrand']").val(),
+                cvv: $("input[name='cardCVV']").val(),
+                expirationMonth: $("input[name='cardExpiryMonth']").val(),
+                expirationYear: $("input[name='cardExpiryYear']").val(),
+                success: function(response){
+                    console.log('success createCredCardToken');
+                    console.log(response);
+                    $("input[name='cardToken']").val(response.card.token);
+                },
+                error: function(response){
+                    console.log('error createCredCardToken');
+                    console.log(response);     
+                },
+                complete: function(response){
+                   endPreloader();
                 }
             });
         }
