@@ -18,7 +18,7 @@ Primeiro passo, clonar o projeto:
 git clone https://github.com/fabianofalcao/pagseguro-laravel5.git
 
 # Acessar
-cd laravel-com-vue-exemplo
+cd pagseguro-laravel5
 ```
 
 ## Configuração - Backend
