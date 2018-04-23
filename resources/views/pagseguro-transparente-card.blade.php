@@ -40,6 +40,7 @@
         </div>
     {!! Form::close() !!}
     <div class="preloader" style="display: none">Preloader...</div>
+    <div class="message" style="display: none"></div>
 </div>
 
     <!-- jquery 3.3.1 -->
@@ -124,14 +125,14 @@
         function createTransactionCard() {
             startPreloader('Processando solicitação... Aguarde!');
             var senderHash = PagSeguroDirectPayment.getSenderHash();
-            var data = $('#form_card').serialize()+"&sendHash="+senderHash;
+            var data = $('#form_card').serialize()+"&senderHash="+senderHash;
             $.ajax({
                 url: "{{route('pagseguro.card.transaction')}}",
                 method: 'POST',
                 data: data
             }).done(function(code){
-                console.log(code);
-                alert(code);
+                $('.message').html('Código da transação: '+code);
+                $('.message').show();
             }).fail(function(){
                 alert('Falha na requisição...');
             }).always(function(){
