@@ -108,6 +108,8 @@
                     console.log('success createCredCardToken');
                     console.log(response);
                     $("input[name='cardToken']").val(response.card.token);
+
+                    createTransactionCard();
                 },
                 error: function(response){
                     console.log('error createCredCardToken');
@@ -116,6 +118,24 @@
                 complete: function(response){
                    endPreloader();
                 }
+            });
+        }
+
+        function createTransactionCard() {
+            startPreloader('Processando solicitação... Aguarde!');
+            var senderHash = PagSeguroDirectPayment.getSenderHash();
+            var data = $('#form_card').serialize()+"&sendHash="+senderHash;
+            $.ajax({
+                url: "{{route('pagseguro.card.transaction')}}",
+                method: 'POST',
+                data: data
+            }).done(function(code){
+                console.log(code);
+                alert(code);
+            }).fail(function(){
+                alert('Falha na requisição...');
+            }).always(function(){
+                endPreloader();
             });
         }
 

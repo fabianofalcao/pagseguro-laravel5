@@ -119,8 +119,11 @@ class PagSeguro extends Model
         $contents = $body->getContents();
         $xml = simplexml_load_string($contents);
         
-        return $xml->paymentLink;
-        
-        
+        return $xml->paymentLink; 
+    }
+
+    public function paymentCredCard($request)
+    {
+        return $request->all();
     }
 }

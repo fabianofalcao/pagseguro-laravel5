@@ -45,4 +45,9 @@ class PagSeguroController extends Controller
     {
         return view('pagseguro-transparente-card');
     }
+
+    public function cardTransaction(Request $request,PagSeguro $pagseguro)
+    {
+        return $pagseguro->paymentCredCard($request);
+    }
 }
