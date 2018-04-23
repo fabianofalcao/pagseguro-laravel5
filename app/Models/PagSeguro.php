@@ -69,6 +69,7 @@ class PagSeguro extends Model
         $contents = $body->getContents();
 
         $xml = simplexml_load_string($contents);
+        //dd($xml->id);
         return $xml->id;
     }
 

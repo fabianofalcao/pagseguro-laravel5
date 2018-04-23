@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <h1>Pagar com cartão</h1>
-    {!! Form::open([]) !!}
+    {!! Form::open(['id' => 'form_card']) !!}
         <div class="form-group">
             <label for="cardNumber">Número do cartão</label>
             {!! Form::text('cardNumber', null, ['class' => 'form-control', 'placeholder' => 'Número do cartão', 'required']) !!}
@@ -34,9 +34,11 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-default">Enviar agora</button>
+            {!! Form::hidden('cardBrand', null) !!}
+            <button type="submit" class="btn btn-default btn-buy">Enviar agora</button>
         </div>
     {!! Form::close() !!}
+    <div class="preloader" style="display: none">Preloader...</div>
 </div>
 
     <!-- jquery 3.3.1 -->
@@ -48,36 +50,60 @@
     <script>
         $(function(){
             setSessionId();
-
+            
+            $('#form_card').submit(function(){
+                getBrand();
+                return false;
+            })
 
         });
 
+        
         function setSessionId(){
-            var data = $('#form').serialize();
+            startPreloader('Carregando a sessão... Aguarde!');
+            var data = $('#form_card').serialize();
             $.ajax({
                 url: "{{route('pagseguro.code.transparente')}}",
                 method: 'POST',
                 data: data
             }).done(function(code){
+                //console.log(code);
                 PagSeguroDirectPayment.setSessionId(code);
             }).fail(function(){
                 alert('Falha na requisição...');
+            }).always(function(){
+                endPreloader();
             });
         }
 
         function getBrand(){
             PagSeguroDirectPayment.getBrand({
-                cardNumber: $("input[name='cardNumber']").val().replace(/ /g, '');
-                seccess: function(response){
-
+                cardBin: $("input[name='cardNumber']").val().replace(/ /g, ''),
+                success: function(response){
+                    console.log('success getbrand');
+                    console.log(response);
+                    $("input[name='cardBrand']").val(response.brand.name);
                 },
                 error: function(response){
-
+                    console.log('error getbrand');
+                    console.log(response);     
                 },
                 complete: function(response){
-
+                   
                 }
             });
+        }
+
+        function startPreloader(msgPreloader) {
+            if(msgPreloader != '')
+                $('.preloader').html(msgPreloader);
+            $('.preloader').show();
+            $('.btn-buy').addClass('disabled');
+        }
+        
+        function endPreloader() {
+            $('.preloader').hide();
+            $('.btn-buy').removeClass('disabled');
         }
     </script>
     
